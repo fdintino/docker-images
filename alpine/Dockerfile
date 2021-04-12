@@ -15,9 +15,16 @@ RUN apk --no-cache add \
     openssl \
     # dev dependencies
     bash \
+    cmake \
+    curl \
+    dav1d-dev \
     git \
+    nasm \
+    ninja \
+    perl \
     py3-pip \
     sudo \
+    tar \
     # Pillow dependencies
     freetype-dev \
     fribidi-dev \
@@ -30,12 +37,6 @@ RUN apk --no-cache add \
     tk-dev \
     zlib-dev
 
-ADD depends /depends
-RUN cd /depends \
-    && ./install_webp.sh \
-    && ./install_imagequant.sh \
-    && ./install_raqm.sh
-
 RUN /usr/sbin/adduser -D pillow \
     && pip3 install --no-cache-dir -I virtualenv \
     && virtualenv /vpy3 \
@@ -43,6 +44,13 @@ RUN /usr/sbin/adduser -D pillow \
     && /vpy3/bin/pip install --no-cache-dir olefile pytest pytest-cov pytest-timeout \
     && /vpy3/bin/pip install --no-cache-dir numpy --only-binary=:all: || true \
     && chown -R pillow:pillow /vpy3
+
+ADD depends /depends
+RUN cd /depends \
+    && ./install_webp.sh \
+    && ./install_imagequant.sh \
+    && ./install_raqm.sh \
+    && ./install_libavif.sh
 
 USER pillow
 CMD ["depends/test.sh"]

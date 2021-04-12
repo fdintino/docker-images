@@ -10,6 +10,7 @@ RUN yum install -y \
     gcc \
     gcc-c++ \
     ghostscript \
+    git \
     harfbuzz-devel \
     lcms2-devel \
     libffi-devel \
@@ -17,6 +18,7 @@ RUN yum install -y \
     libtiff-devel \
     libwebp-devel \
     make \
+    nasm \
     pth-devel \
     python3-devel \
     python3-test \
@@ -36,6 +38,7 @@ RUN yum install -y \
 RUN useradd --uid 1000 pillow
 
 RUN bash -c "/usr/bin/pip3 install virtualenv \
+    && /usr/bin/pip3 install --no-cache-dir cmake ninja \
     && /usr/bin/python3 -mvirtualenv -p /usr/bin/python3 --system-site-packages /vpy3 \
     && /vpy3/bin/pip install --no-cache-dir --upgrade pip \
     && /vpy3/bin/pip install --no-cache-dir cffi olefile pytest pytest-cov pytest-timeout \
@@ -45,6 +48,7 @@ RUN bash -c "/usr/bin/pip3 install virtualenv \
 ADD depends /depends
 RUN cd /depends \
     && ./install_imagequant.sh \
+    && ./install_libavif.sh \
     && ./install_openjpeg.sh \
     && ./install_raqm.sh
 

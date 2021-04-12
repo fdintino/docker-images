@@ -2,6 +2,7 @@ FROM ubuntu:focal
 
 RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
     cmake \
+    curl \
     ghostscript \
     git \
     libegl-dev \
@@ -21,7 +22,9 @@ RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
     libxcb-keysyms1 \
     libxcb-render-util0 \
     libxkbcommon-x11-0 \
+    nasm \
     netpbm \
+    ninja-build \
     python3-dev \
     python3-numpy \
     python3-scipy \
@@ -49,6 +52,7 @@ RUN virtualenv -p /usr/bin/python3.8 --system-site-packages /vpy3 \
 ADD depends /depends
 RUN cd /depends \
     && ./install_imagequant.sh \
+    && ./install_libavif.sh \
     && ./install_raqm.sh
 
 USER pillow

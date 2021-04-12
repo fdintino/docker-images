@@ -2,6 +2,7 @@ FROM ubuntu:bionic
 
 RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
     cmake \
+    curl \
     ghostscript \
     git \
     libffi-dev \
@@ -14,7 +15,9 @@ RUN apt-get -qq update && DEBIAN_FRONTEND=noninteractive apt-get -y install \
     libopenjp2-7-dev \
     libtiff5-dev \
     libwebp-dev \
+    nasm \
     netpbm \
+    ninja-build \
     python3-dev \
     python3-numpy \
     python3-scipy \
@@ -42,6 +45,7 @@ RUN virtualenv -p /usr/bin/python3.6 --system-site-packages /vpy3 \
 ADD depends /depends
 RUN cd /depends \
     && ./install_imagequant.sh \
+    && ./install_libavif.sh \
     && ./install_raqm.sh
 
 USER pillow

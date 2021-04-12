@@ -6,7 +6,9 @@ RUN yum install -y epel-release centos-release-scl \
 RUN yum install -y \
     freetype-devel \
     gcc \
+    gcc-c++ \
     ghostscript \
+    git \
     lcms2-devel \
     libffi-devel \
     libimagequant-devel \
@@ -15,6 +17,7 @@ RUN yum install -y \
     libtiff-devel \
     libwebp-devel \
     make \
+    nasm \
     openjpeg2-devel \
     rh-python36 \
     rh-python36-python-virtualenv \
@@ -30,6 +33,7 @@ RUN yum install -y \
 RUN useradd --uid 1000 pillow
 
 RUN bash -c "source /opt/rh/rh-python36/enable \
+    && /opt/rh/rh-python36/root/usr/bin/pip install cmake ninja \
     && /opt/rh/rh-python36/root/usr/bin/virtualenv -p python3.6 --system-site-packages /vpy3 \
     && /vpy3/bin/pip install --no-cache-dir --upgrade pip \
     && /vpy3/bin/pip install --no-cache-dir cffi olefile pytest pytest-cov pytest-timeout \
@@ -39,6 +43,10 @@ RUN bash -c "source /opt/rh/rh-python36/enable \
     && chown -R pillow:pillow /vpy3"
 
 ADD depends /depends
+
+RUN bash -c "source /opt/rh/rh-python36/enable \
+    && cd /depends \
+    && ./install_libavif.sh"
 
 USER pillow
 CMD ["depends/test.sh"]

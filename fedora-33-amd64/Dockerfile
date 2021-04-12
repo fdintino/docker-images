@@ -1,21 +1,27 @@
 FROM fedora:33
 
 RUN dnf install -y \
+    cmake \
     freetype-devel \
     fribidi-devel \
     gcc \
     harfbuzz-devel \
     lcms2-devel \
+    libaom-devel \
+    libdav1d-devel \
     libimagequant-devel \
     libjpeg-devel \
     libraqm-devel \
     libtiff-devel \
     libwebp-devel \
     make \
+    nasm \
+    ninja-build \
     openjpeg2-devel \
     python3-devel \
     python3-tkinter \
     python3-virtualenv \
+    rav1e-devel \
     redhat-rpm-config \
     tcl-devel \
     tk-devel \
@@ -35,6 +41,8 @@ RUN virtualenv -p /usr/bin/python3.9 --system-site-packages /vpy3 \
     && chown -R pillow:pillow /vpy3
 
 ADD depends /depends
+
+RUN cd /depends && ./install_libavif.sh
 
 USER pillow
 CMD ["depends/test.sh"]

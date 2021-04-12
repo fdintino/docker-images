@@ -9,8 +9,11 @@ RUN yum install -y 'dnf-command(config-manager)' \
 RUN yum config-manager --set-enabled powertools
 
 RUN yum install -y \
+    cmake \
     freetype-devel \
     gcc \
+    gcc-c++ \
+    git \
     ghostscript \
     lcms2-devel \
     libffi-devel \
@@ -20,6 +23,8 @@ RUN yum install -y \
     libtiff-devel \
     libwebp-devel \
     make \
+    nasm \
+    ninja-build \
     openjpeg2-devel \
     python3 \
     python3-tkinter \
@@ -41,6 +46,9 @@ RUN bash -c "/usr/bin/virtualenv -p python3.6 --system-site-packages /vpy3 \
     && chown -R pillow:pillow /vpy3"
 
 ADD depends /depends
+
+RUN cd /depends \
+     && ./install_libavif.sh \
 
 USER pillow
 CMD ["depends/test.sh"]

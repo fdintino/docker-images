@@ -20,6 +20,7 @@ RUN pacman -Sy --noconfirm \
             gcc \
             ghostscript \
             git \
+            libavif \
             libffi \
             make \
             mesa-libgl \
